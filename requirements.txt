@@ -10,3 +10,4 @@ huggingface-hub
 InstructorEmbedding
 sentence-transformers
 streamlit
+gtts
