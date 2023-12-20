@@ -81,31 +81,34 @@ def handle_userinput(user_question):
 
 # 음성 메시지            
 def handle_userinput(user_question):
-    response = st.session_state.conversation({'question': user_question})
-    st.session_state.chat_history = response['chat_history']
+    if st.session_state.conversation:
+        response = st.session_state.conversation({'question': user_question})
+        st.session_state.chat_history = response['chat_history']
 
-   # 'temp' 폴더 생성
-    os.makedirs("temp", exist_ok=True)
+        # 'temp' 폴더 생성
+        os.makedirs("temp", exist_ok=True)
 
-    for i, message in enumerate(st.session_state.chat_history):
-        if i % 2 != 0:
-            chatbot_response = message.content  # 대화 히스토리의 메시지 내용을 chatbot_response에 저장
-            user_message = user_template.replace("{{MSG}}", chatbot_response)
-            st.write(user_message, unsafe_allow_html=True)
+        for i, message in enumerate(st.session_state.chat_history):
+            if i % 2 != 0:
+                chatbot_response = message.content  # 대화 히스토리의 메시지 내용을 chatbot_response에 저장
+                user_message = user_template.replace("{{MSG}}", chatbot_response)
+                st.write(user_message, unsafe_allow_html=True)
 
-            # 음성으로 변환
-            tts = gTTS(chatbot_response, lang='ja', slow=False)
-            tts_file_path = "temp/tts_response.mp3"
-            tts.save(tts_file_path)
+                # 음성으로 변환
+                tts = gTTS(chatbot_response, lang='ja', slow=False)
+                tts_file_path = "temp/tts_response.mp3"
+                tts.save(tts_file_path)
 
-            # 재생 버튼 추가
-            st.audio(open(tts_file_path, 'rb').read(), format="audio/mp3", start_time=0)
+                # 재생 버튼 추가
+                st.audio(open(tts_file_path, 'rb').read(), format="audio/mp3", start_time=0)
 
-            # 임시 파일 삭제
-            os.remove(tts_file_path)
-            
-        else:
-            st.write(bot_template.replace("{{MSG}}", message.content), unsafe_allow_html=True)
+                # 임시 파일 삭제
+                os.remove(tts_file_path)
+
+            else:
+                st.write(bot_template.replace("{{MSG}}", message.content), unsafe_allow_html=True)
+    else:
+        st.warning("まだチャットが始まっていません。まず、文書を登録し、「登録」ボタンを押して会話を始めてください。")
 
 
 def main():
