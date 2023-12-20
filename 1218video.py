@@ -134,8 +134,8 @@ def main():
 
         if st.button("登録"):
             with st.spinner("登録中"):
-                pdf_raw_text = get_pdf_text(pdf_docs)
-                txt_raw_text = get_text_from_txt(txt_docs)
+                pdf_raw_text = get_pdf_text(pdf_docs) if pdf_docs else ""
+                txt_raw_text = get_text_from_txt(txt_docs) if txt_docs else ""
                 raw_text = pdf_raw_text + txt_raw_text
                 text_chunks = get_text_chunks(raw_text)
                 vectorstore = get_vectorstore(text_chunks)
@@ -144,8 +144,6 @@ def main():
 
     with st.sidebar:
         st.title("動画ガイドをアップロード・検索")
-        
-
         
         uploaded_videos = st.file_uploader("動画をアップロードしてください。", accept_multiple_files=True, type=["mp4", "avi"])
 
@@ -170,3 +168,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
