@@ -108,7 +108,7 @@ def handle_userinput(user_question):
             else:
                 st.write(bot_template.replace("{{MSG}}", message.content), unsafe_allow_html=True)
     else:
-        st.warning("まだチャットが始まっていません。まず、文書を登録し、「登録」ボタンを押して会話を始めてください。")
+        st.warning("まだチャットが始まっていません。まず、ファイルを登録し、「登録」ボタンを押して会話を始めてください。")
 
 
 def main():
